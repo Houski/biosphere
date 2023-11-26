@@ -3,11 +3,12 @@ use ndarray::{ArrayView1, ArrayView2};
 use rand::seq::SliceRandom;
 use rand::Rng;
 use std::debug_assert;
+use serde::{Serialize, Deserialize};
 
 static MIN_GAIN_TO_SPLIT: f64 = 1e-12;
 static FEATURE_THRESHOLD: f64 = 1e-14;
 
-#[derive(Default)]
+#[derive(Default, Serialize, Deserialize)]
 pub struct DecisionTreeNode {
     pub left_child: Option<Box<DecisionTreeNode>>,
     pub right_child: Option<Box<DecisionTreeNode>>,

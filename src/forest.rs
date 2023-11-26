@@ -8,6 +8,7 @@ use rand::Rng;
 use rand::SeedableRng;
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use rayon::ThreadPoolBuilder;
+use serde::{Serialize, Deserialize};
 
 #[derive(Clone, Debug)]
 pub struct RandomForestParameters {
@@ -96,7 +97,9 @@ impl RandomForestParameters {
     }
 }
 
+#[derive(Serialize, Deserialize)]
 pub struct RandomForest {
+    #[serde(skip)]
     random_forest_parameters: RandomForestParameters,
     trees: Vec<DecisionTree>,
 }
