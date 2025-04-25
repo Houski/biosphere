@@ -5,6 +5,7 @@ use ndarray::{Array1, ArrayView1, ArrayView2};
 use rand::rngs::StdRng;
 use rand::SeedableRng;
 use serde::{Serialize, Deserialize};
+use rayon::prelude::*;
 
 #[derive(Serialize, Deserialize)]
 pub struct DecisionTree {
