@@ -72,13 +72,14 @@ impl DecisionTree {
 
 pub fn predict(&self, X: &ArrayView2<f64>) -> Array1<f64> {
     let row_count = X.nrows();
-    let mut predictions = Array1::<f64>::zeros(row_count);
     
-    (0..row_count).into_par_iter().for_each(|row| {
-        predictions[row] = self.predict_row(&X.row(row));
-    });
+    let predictions: Vec<f64> = (0..row_count)
+        .into_par_iter()
+        .map(|row| self.predict_row(&X.row(row)))
+        .collect();
     
-    predictions
+    // Convert to Array1 (this is efficient - no data copying)
+    Array1::from(predictions)
 }
 
     pub fn predict_row(&self, X: &ArrayView1<f64>) -> f64 {
