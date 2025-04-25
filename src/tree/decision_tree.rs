@@ -70,10 +70,17 @@ impl DecisionTree {
     }
 
     pub fn predict(&self, X: &ArrayView2<f64>) -> Array1<f64> {
-        let mut predictions = Array1::<f64>::zeros(X.nrows());
-        for row in 0..X.nrows() {
-            predictions[row] = self.predict_row(&X.row(row));
-        }
+        let row_count = X.nrows();
+        let mut predictions = Array1::<f64>::zeros(row_count);
+
+        // Convert to parallel iterator and collect results - ALEX
+        predictions
+            .par_iter_mut()
+            .enumerate()
+            .for_each(|(row, pred)| {
+                *pred = self.predict_row(&X.row(row));
+            });
+
         predictions
     }
 
